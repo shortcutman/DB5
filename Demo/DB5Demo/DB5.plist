@@ -4,10 +4,12 @@
 <dict>
 	<key>Default</key>
 	<dict>
+		<key>aliasTest</key>
+		<string>ececec</string>
 		<key>backgroundColor</key>
 		<string>708090</string>
 		<key>labelTextColor</key>
-		<string>ececec</string>
+		<string>$aliasTest</string>
 		<key>labelFont</key>
 		<string>Avenir-Medium</string>
 		<key>labelFontSize</key>
