@@ -46,6 +46,15 @@ static NSString* aliasString(NSString *key);
 - (id)objectForKey:(NSString *)key {
 
 	id obj = [self.themeDictionary valueForKeyPath:key];
+	if (obj == nil) {
+		if (self.parentTheme != nil) {
+			obj = [self.parentTheme objectForKey:key];
+		}
+		else {
+			NSLog(@"VSTheme could not find entry for key '%@' in '%@'", key, self.name);
+		}
+	}
+
 	if (obj == nil && self.parentTheme != nil)
 		obj = [self.parentTheme objectForKey:key];
 
