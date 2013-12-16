@@ -12,6 +12,7 @@
 static BOOL stringIsEmpty(NSString *s);
 static UIColor *colorWithHexString(NSString *hexString);
 
+static NSString* aliasString(NSString *key);
 
 @interface VSTheme ()
 
@@ -47,6 +48,16 @@ static UIColor *colorWithHexString(NSString *hexString);
 	id obj = [self.themeDictionary valueForKeyPath:key];
 	if (obj == nil && self.parentTheme != nil)
 		obj = [self.parentTheme objectForKey:key];
+
+	if ([(NSObject*)obj isKindOfClass:[NSString class]])
+	{
+		NSString* aliasKey = aliasString((NSString*)obj);
+		if (aliasKey)
+		{
+			return [self objectForKey:aliasKey];
+		}
+	}
+
 	return obj;
 }
 
@@ -283,4 +294,15 @@ static UIColor *colorWithHexString(NSString *hexString) {
 	[[NSScanner scannerWithString:blueString] scanHexInt:&blue];
 
 	return [UIColor colorWithRed:(CGFloat)red/255.0f green:(CGFloat)green/255.0f blue:(CGFloat)blue/255.0f alpha:1.0f];
+}
+
+static NSString *aliasString(NSString *key) {
+	static NSString* const aliasPrefix = @"$";
+
+	if ([key hasPrefix:aliasPrefix])
+	{
+		return [key substringFromIndex:[aliasPrefix length]];
+	}
+
+	return nil;
 }
